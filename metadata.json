@@ -1,0 +1,6 @@
+{
+  "name": "مبادرة شكراً حماة الوطن | Thanks to Our Homeland Protectors",
+  "description": "مبادرة مدرسية وطنية للمتوسطة الأولى بالراكة لكتابة رسائل شكر وعرفان باللغة الإنجليزية لرجال الأمن وحماة الوطن.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
