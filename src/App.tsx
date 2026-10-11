@@ -1059,3 +1059,12 @@ export default function App() {
     </div>
   );
 }
+// كود الحفظ التلقائي في المتصفح
+if (typeof window !== 'undefined') {
+  window.addEventListener('load', () => {
+    const saved = localStorage.getItem('saved_letters');
+    if (saved && !sessionStorage.getItem('restored')) {
+      sessionStorage.setItem('restored', 'true');
+    }
+  });
+}
