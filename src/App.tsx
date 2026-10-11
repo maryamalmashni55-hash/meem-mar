@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { Heart, X, Feather, Mail, Check, Send, Edit3, Shield } from 'lucide-react';
+import { createClient } from '@supabase/supabase-js';
 
 export type SealId = 'emblem' | 'falcon' | 'flag';
 
@@ -24,6 +25,11 @@ export interface SealConfig {
   waxDeep: string;
   goldAccent: string;
 }
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL || import.meta.env.NEXT_PUBLIC_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+);
 
 export const WAX_SEALS_CONFIG: SealConfig[] = [
   {
@@ -306,20 +312,28 @@ export default function App() {
   const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
-    fetch('/api/messages')
-      .then(response => response.ok ? response.json() : Promise.reject(new Error('load failed')))
-      .then((rows: Array<{id: string; student_name: string; message_en: string; seal_id: SealId; likes: number; created_at: string}>) => {
-        setSavedEnvelopes(rows.map(row => ({
-          id: row.id,
-          studentName: row.student_name,
-          messageEn: row.message_en,
-          sealId: row.seal_id,
-          likes: row.likes,
-          isLiked: false,
-          timestamp: new Date(row.created_at).toLocaleString('ar-SA'),
-        })));
-      })
-      .catch(() => setSavedEnvelopes([]));
+    let active = true;
+    const loadMessages = async () => {
+      const { data, error } = await supabase
+        .from('messages')
+        .select('id, student_name, message_en, seal_id, likes, created_at')
+        .order('created_at', { ascending: false });
+      if (!active || error) {
+        if (error) setSubmitError('تعذر تحميل الرسائل المحفوظة حالياً.');
+        return;
+      }
+      setSavedEnvelopes((data ?? []).map(row => ({
+        id: row.id,
+        studentName: row.student_name,
+        messageEn: row.message_en,
+        sealId: (row.seal_id as SealId) || 'emblem',
+        likes: row.likes ?? 0,
+        isLiked: false,
+        timestamp: new Date(row.created_at).toLocaleString('ar-SA'),
+      })));
+    };
+    void loadMessages();
+    return () => { active = false; };
   }, []);
 
   // Modal for reading any student envelope from gallery
@@ -378,18 +392,14 @@ export default function App() {
     setMessageEn('');
     setSimulationStage('closed_initial');
 
-    try {
-      const controller = new AbortController();
-      const timeout = window.setTimeout(() => controller.abort(), 8000);
-      const response = await fetch('/api/messages', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({id: newLetter.id, student_name: newLetter.studentName, message_en: newLetter.messageEn, seal_id: newLetter.sealId, likes: 0}),
-        signal: controller.signal,
-      });
-      window.clearTimeout(timeout);
-      if (!response.ok) throw new Error('save failed');
-    } catch {
+    const { error } = await supabase.from('messages').insert({
+      id: newLetter.id,
+      student_name: newLetter.studentName,
+      message_en: newLetter.messageEn,
+      seal_id: newLetter.sealId,
+      likes: 0,
+    });
+    if (error) {
       setSubmitError('تم عرض الرسالة على الجدار، لكن تعذر حفظها سحابياً حالياً. يرجى المحاولة لاحقاً.');
     }
 
@@ -414,11 +424,13 @@ export default function App() {
           if (inspectingLetter && inspectingLetter.id === id) {
             setInspectingLetter(updated);
           }
-          fetch('/api/messages', {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id, likes: updated.likes}),
-          }).catch(() => undefined);
+          void supabase
+            .from('messages')
+            .update({ likes: updated.likes })
+            .eq('id', id)
+            .then(({ error }) => {
+              if (error) setSubmitError('تم تحديث الإعجاب محلياً، لكن تعذر حفظه سحابياً حالياً.');
+            });
           return updated;
         }
         return item;
