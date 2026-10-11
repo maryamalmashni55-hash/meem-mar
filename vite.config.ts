@@ -23,9 +23,21 @@ const messagesApi = (env: Record<string, string>): Connect.NextHandleFunction =>
       let body = '';
       for await (const chunk of req) body += chunk;
       const payload = body ? JSON.parse(body) : {};
+      if (req.method !== 'POST' && req.method !== 'PATCH') {
+        res.statusCode = 405;
+        res.end(JSON.stringify({error: 'Method not allowed'}));
+        return;
+      }
+      const messagePayload = {
+        id: payload.id || `env-${Date.now()}`,
+        student_name: String(payload.student_name || 'طالبة مجهولة').trim() || 'طالبة مجهولة',
+        message_en: String(payload.message_en || 'Thank you for everything you do.').trim() || 'Thank you for everything you do.',
+        seal_id: ['emblem', 'falcon', 'flag'].includes(payload.seal_id) ? payload.seal_id : 'emblem',
+        likes: Number.isInteger(payload.likes) && payload.likes >= 0 ? payload.likes : 0,
+      };
       const query = req.method === 'POST'
-        ? supabase.from('messages').insert(payload).select('id, student_name, message_en, seal_id, likes, created_at').single()
-        : supabase.from('messages').update({likes: payload.likes}).eq('id', payload.id).select('id, likes').single();
+        ? supabase.from('messages').insert(messagePayload).select('id, student_name, message_en, seal_id, likes, created_at').single()
+        : supabase.from('messages').update({likes: messagePayload.likes}).eq('id', messagePayload.id).select('id, likes').single();
       const {data, error} = await query;
       if (error) throw error;
       res.statusCode = req.method === 'POST' ? 201 : 200;

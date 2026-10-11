@@ -303,6 +303,7 @@ export default function App() {
   const [messageEn, setMessageEn] = useState('');
 
   const [savedEnvelopes, setSavedEnvelopes] = useState<SavedEnvelope[]>([]);
+  const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
     fetch('/api/messages')
@@ -333,7 +334,7 @@ export default function App() {
   // 2. Fold the letter paper back into the envelope
   const handleFoldLetter = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!studentName.trim() || !messageEn.trim()) return;
+    setSubmitError('');
     playTactileAudio('fold');
     setSimulationStage('folded');
   };
@@ -359,27 +360,38 @@ export default function App() {
   // 4. Deliver the sealed letter to the heroes wall
   const handleDeliverToHeroes = async () => {
     playTactileAudio('stamp');
+    setSubmitError('');
 
     const newLetter: SavedEnvelope = {
       id: `env-${Date.now()}`,
-      studentName: studentName.trim(),
-      messageEn: messageEn.trim(),
-      sealId: selectedSeal,
+      studentName: studentName.trim() || 'طالبة مجهولة',
+      messageEn: messageEn.trim() || 'Thank you for everything you do.',
+      sealId: selectedSeal || 'emblem',
       likes: 0,
       isLiked: false,
       timestamp: 'الآن',
     };
 
-    const response = await fetch('/api/messages', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({id: newLetter.id, student_name: newLetter.studentName, message_en: newLetter.messageEn, seal_id: newLetter.sealId, likes: 0}),
-    });
-    if (!response.ok) return;
-    setSavedEnvelopes(prev => [newLetter, ...prev]);
+    // Update the wall immediately so a slow or unavailable API never traps the student.
+    setSavedEnvelopes(prev => [newLetter, ...prev.filter(item => item.id !== newLetter.id)]);
     setStudentName('');
     setMessageEn('');
     setSimulationStage('closed_initial');
+
+    try {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 8000);
+      const response = await fetch('/api/messages', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({id: newLetter.id, student_name: newLetter.studentName, message_en: newLetter.messageEn, seal_id: newLetter.sealId, likes: 0}),
+        signal: controller.signal,
+      });
+      window.clearTimeout(timeout);
+      if (!response.ok) throw new Error('save failed');
+    } catch {
+      setSubmitError('تم عرض الرسالة على الجدار، لكن تعذر حفظها سحابياً حالياً. يرجى المحاولة لاحقاً.');
+    }
 
     setTimeout(() => {
       document.getElementById('gallery-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -558,9 +570,14 @@ export default function App() {
                   </div>
                 </div>
 
-                <form onSubmit={handleFoldLetter} className="space-y-6 text-right">
-                  
-                  {/* اسم الطالبة */}
+                  <form onSubmit={handleFoldLetter} className="space-y-6 text-right">
+                    {submitError && (
+                      <p role="alert" className="rounded-xl border border-amber-700/40 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950">
+                        {submitError}
+                      </p>
+                    )}
+
+                    {/* اسم الطالبة */}
                   <div className="space-y-1">
                     <label htmlFor="student-name-field" className="block text-xs sm:text-sm font-bold text-[#0c311c]">
                       اسم الطالبة (Student Name) <span className="text-[#c5a059]">*</span>
