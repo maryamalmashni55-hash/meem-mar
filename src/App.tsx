@@ -417,7 +417,7 @@ export default function App() {
   const currentSealConfig = WAX_SEALS_CONFIG.find(s => s.id === selectedSeal) || WAX_SEALS_CONFIG[0];
 
   return (
-    <div className="min-h-screen wood-desk-bg text-amber-100 flex flex-col font-cairo selection:bg-amber-700 selection:text-white relative overflow-x-hidden">
+    <div className="min-h-screen royal-emerald-gold-bg text-[#fcf8ec] flex flex-col font-cairo selection:bg-emerald-900 selection:text-amber-100 relative overflow-x-hidden">
       
       {/* =========================================================================
           1. أول شيء: ترويسة المبادرة والمشرفين (اسم المبادرة والمشرفين أول شيء في المقدمة)
@@ -425,47 +425,47 @@ export default function App() {
       <header className="pt-8 pb-4 px-4 sm:px-6 text-center">
         <div className="max-w-4xl mx-auto space-y-4">
           
-          {/* اسم المبادرة الرئيسي أول شيء في المقدمة بارز وفخم */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-100 via-amber-300 to-amber-200 tracking-tight leading-tight drop-shadow-[0_2px_15px_rgba(0,0,0,0.85)] font-amiri">
+          {/* اسم المبادرة الرئيسي أول شيء في المقدمة بارز بتدرج ذهبي راقٍ وخفيف */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#fff6d6] via-[#e5c97d] to-[#d4af37] tracking-tight leading-tight drop-shadow-[0_2px_15px_rgba(0,0,0,0.85)] font-amiri">
             مبادرة: شكراً حماة الوطن
           </h1>
 
-          {/* الهدف باللغة الإنجليزية */}
+          {/* الهدف باللغة الإنجليزية بلمسة ذهبية ناعمة */}
           <p
-            className="text-amber-200/90 font-en text-sm sm:text-base md:text-lg font-medium tracking-wide max-w-2xl mx-auto leading-relaxed drop-shadow-sm italic"
+            className="text-[#edd9a3]/90 font-en text-sm sm:text-base md:text-lg font-medium tracking-wide max-w-2xl mx-auto leading-relaxed drop-shadow-sm italic"
             dir="ltr"
           >
             "Write a message of thank and appreciation to the soldiers in English"
           </p>
 
-          {/* بطاقة المشرفين الرسمية وإحصائية عدد الأظرف بارزة في المقدمة */}
-          <div className="max-w-3xl mx-auto p-4 rounded-2xl bg-[#1b0e08]/85 border border-amber-600/40 shadow-xl backdrop-blur-md flex flex-wrap items-center justify-around gap-4 text-xs sm:text-sm text-amber-300">
+          {/* بطاقة المشرفين الرسمية وإحصائية عدد الأظرف بارزة في المقدمة بالأخضر الزمردي والذهب الخفيف */}
+          <div className="max-w-3xl mx-auto p-4 rounded-2xl bg-[#061f14]/85 border border-[#c5a059]/40 shadow-2xl backdrop-blur-md flex flex-wrap items-center justify-around gap-4 text-xs sm:text-sm text-[#ecdab2]">
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-amber-400">المدرسة:</span>
-              <strong className="text-amber-100 font-bold">المتوسطة الأولى بالراكة</strong>
+              <span className="font-semibold text-[#dfc484]">المدرسة:</span>
+              <strong className="text-[#fdfaf1] font-bold">المتوسطة الأولى بالراكة</strong>
             </div>
-            <div className="hidden sm:block text-amber-700">•</div>
+            <div className="hidden sm:block text-[#876e39]">•</div>
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-amber-400">مديرة المدرسة:</span>
-              <strong className="text-amber-100 font-bold">أريج الحماد</strong>
+              <span className="font-semibold text-[#dfc484]">مديرة المدرسة:</span>
+              <strong className="text-[#fdfaf1] font-bold">أريج الحماد</strong>
             </div>
-            <div className="hidden sm:block text-amber-700">•</div>
+            <div className="hidden sm:block text-[#876e39]">•</div>
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-amber-400">معلمة المادة:</span>
-              <strong className="text-amber-100 font-bold">مها آل غرير</strong>
+              <span className="font-semibold text-[#dfc484]">معلمة المادة:</span>
+              <strong className="text-[#fdfaf1] font-bold">مها آل غرير</strong>
             </div>
-            <div className="hidden sm:block text-amber-700">•</div>
+            <div className="hidden sm:block text-[#876e39]">•</div>
             <button
               type="button"
               onClick={() => {
                 document.getElementById('gallery-section')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="flex items-center gap-2 bg-gradient-to-r from-amber-950/90 to-amber-900/90 border border-amber-500/60 px-3.5 py-1.5 rounded-xl shadow-inner hover:border-amber-400 transition-all cursor-pointer group"
+              className="flex items-center gap-2 bg-gradient-to-r from-[#072a19] to-[#0c3922] border border-[#c5a059]/50 hover:border-[#dfc484] px-3.5 py-1.5 rounded-xl shadow-md transition-all cursor-pointer group"
               title="الانتقال إلى جدار الأظرف"
             >
-              <Mail className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-              <span className="font-semibold text-amber-300">عدد الأظرف:</span>
-              <strong className="text-amber-100 font-bold font-mono text-sm bg-amber-900/60 px-2 py-0.5 rounded-md border border-amber-600/40">
+              <Mail className="w-4 h-4 text-[#e5c97d] group-hover:scale-110 transition-transform" />
+              <span className="font-semibold text-[#dfc484]">عدد الأظرف:</span>
+              <strong className="text-[#fdfaf1] font-bold font-mono text-sm bg-[#041a0f] px-2 py-0.5 rounded-md border border-[#c5a059]/40">
                 {savedEnvelopes.length} {savedEnvelopes.length === 1 ? 'ظرف' : savedEnvelopes.length > 2 && savedEnvelopes.length < 11 ? 'أظرف' : 'ظرف'}
               </strong>
             </button>
@@ -481,17 +481,17 @@ export default function App() {
         
         {/* عنوان مساحة كتابة الرسالة وإحصائية عدد الأظرف */}
         <div className="text-center space-y-2.5">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1b0e08]/90 border border-amber-600/50 text-xs sm:text-sm text-amber-300 shadow-lg">
-            <Mail className="w-4 h-4 text-amber-400" />
-            <span className="font-semibold text-amber-300">عدد الأظرف في جدار الفخر:</span>
-            <span className="bg-amber-950/90 text-amber-100 font-bold px-2.5 py-0.5 rounded-lg border border-amber-700/60 font-mono text-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#062416]/90 border border-[#c5a059]/45 text-xs sm:text-sm text-[#edd9a3] shadow-lg">
+            <Mail className="w-4 h-4 text-[#e5c97d]" />
+            <span className="font-semibold text-[#dfc484]">عدد الأظرف في جدار الفخر:</span>
+            <span className="bg-[#03170e]/95 text-[#fbf3d8] font-bold px-2.5 py-0.5 rounded-lg border border-[#c5a059]/50 font-mono text-sm">
               {savedEnvelopes.length} {savedEnvelopes.length === 1 ? 'ظرف' : savedEnvelopes.length > 2 && savedEnvelopes.length < 11 ? 'أظرف' : 'ظرف'}
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-amber-200 font-amiri">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#f5e6be] font-amiri">
             اكتبي رسالتكِ لحماة الوطن
           </h2>
-          <p className="text-xs sm:text-sm text-amber-400/80">
+          <p className="text-xs sm:text-sm text-emerald-200/80">
             الظرف مستقر على سطح المكتب، انقري لفتحه وكتابة كلمات الشكر باللغة الإنجليزية
           </p>
         </div>
@@ -506,36 +506,36 @@ export default function App() {
               <div className="w-full flex flex-col items-center animate-in zoom-in-95 duration-500">
                 <div
                   onClick={handleOpenEnvelope}
-                  className="group relative w-full royal-envelope-paper rounded-3xl p-8 sm:p-14 border-2 border-[#b89f7f] shadow-2xl flex flex-col items-center text-center overflow-hidden min-h-[340px] cursor-pointer hover:border-amber-400 transition-all"
+                  className="group relative w-full royal-envelope-paper rounded-3xl p-8 sm:p-14 border-2 border-[#c5a059]/70 shadow-2xl flex flex-col items-center text-center overflow-hidden min-h-[340px] cursor-pointer hover:border-[#dfc484] transition-all"
                 >
                   
-                  {/* لسان الظرف المسكر لأسفل */}
+                  {/* لسان الظرف المسكر لأسفل مع حافة ذهبية رقيقة */}
                   <div
-                    className="absolute top-0 left-0 right-0 h-40 pointer-events-none border-b-2 border-[#9e8362] shadow-md group-hover:brightness-105 transition-all"
+                    className="absolute top-0 left-0 right-0 h-40 pointer-events-none border-b-2 border-[#b38f46] shadow-md group-hover:brightness-105 transition-all"
                     style={{
                       clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
-                      background: 'linear-gradient(180deg, #ddc7a9 0%, #caa981 100%)',
+                      background: 'linear-gradient(180deg, #ebdcb9 0%, #d8caa4 100%)',
                     }}
                   />
 
                   {/* نص التوجيه فوق الظرف */}
-                  <div className="relative z-10 text-xs font-bold text-[#452713] mt-2 font-amiri">
+                  <div className="relative z-10 text-xs font-bold text-[#143922] mt-2 font-amiri">
                     المتوسطة الأولى بالراكة • ظرف رسالة فخر واعتزاز لحماة الوطن
                   </div>
 
                   {/* زر النقر لفتح الظرف وإخراج الورقة */}
                   <div className="relative z-10 my-auto pt-10 pb-4 flex flex-col items-center">
-                    <div className="w-20 h-20 rounded-full bg-[#cfba9c]/80 border-2 border-[#8c6742] flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
-                      <Mail className="w-10 h-10 text-[#452b17]" />
+                    <div className="w-20 h-20 rounded-full bg-[#dfd0b5]/80 border-2 border-[#b38f46] flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
+                      <Mail className="w-10 h-10 text-[#143922]" />
                     </div>
 
-                    <span className="mt-5 px-7 py-3 rounded-2xl bg-[#2e190f] text-amber-200 font-bold text-sm shadow-xl group-hover:bg-[#422416] transition-all flex items-center gap-2 border border-amber-600/50">
+                    <span className="mt-5 px-7 py-3 rounded-2xl bg-[#093520] text-[#fbf5e2] font-bold text-sm shadow-xl group-hover:bg-[#0e482c] transition-all flex items-center gap-2 border border-[#c5a059]/60">
                       <span>انقري لفتح الظرف وإخراج الورقة</span>
-                      <Feather className="w-4 h-4 text-amber-400" />
+                      <Feather className="w-4 h-4 text-[#e5c97d]" />
                     </span>
                   </div>
 
-                  <p className="relative z-10 text-xs text-[#5e381f] font-semibold">
+                  <p className="relative z-10 text-xs text-[#2b4c37] font-semibold">
                     انقري هنا ليفتح الظرف وتنزلق الورقة لكتابة رسالتكِ
                   </p>
 
@@ -545,16 +545,16 @@ export default function App() {
 
             {/* الحالة 2: ورقة الرسالة مفتوحة على سطح المكتب للكتابة */}
             {simulationStage === 'writing' && (
-              <div className="w-full official-letter-paper rounded-3xl p-6 sm:p-10 text-[#2b170c] shadow-2xl border border-[#c4ac8f] animate-paper-extract">
+              <div className="w-full official-letter-paper rounded-3xl p-6 sm:p-10 text-[#11311f] shadow-2xl border border-[#c5a059] animate-paper-extract">
                 
                 {/* ترويسة الورقة الرسمية */}
-                <div className="flex items-center justify-between border-b border-[#9c7650]/40 pb-3 mb-6 text-xs font-semibold">
+                <div className="flex items-center justify-between border-b border-[#295c3e]/30 pb-3 mb-6 text-xs font-semibold">
                   <div className="text-right">
-                    <p className="font-bold text-[#42220f] text-sm font-amiri">المملكة العربية السعودية</p>
-                    <p className="text-[#694226]">المتوسطة الأولى بالراكة</p>
+                    <p className="font-bold text-[#0c311c] text-sm font-amiri">المملكة العربية السعودية</p>
+                    <p className="text-[#205234]">المتوسطة الأولى بالراكة</p>
                   </div>
                   <div className="text-left font-en italic" dir="ltr">
-                    <p className="font-bold text-[#42220f]">To Our Brave Soldiers</p>
+                    <p className="font-bold text-[#0c311c]">To Our Brave Soldiers</p>
                   </div>
                 </div>
 
@@ -562,8 +562,8 @@ export default function App() {
                   
                   {/* اسم الطالبة */}
                   <div className="space-y-1">
-                    <label htmlFor="student-name-field" className="block text-xs sm:text-sm font-bold text-[#3d2312]">
-                      اسم الطالبة (Student Name) <span className="text-amber-800">*</span>
+                    <label htmlFor="student-name-field" className="block text-xs sm:text-sm font-bold text-[#0c311c]">
+                      اسم الطالبة (Student Name) <span className="text-[#c5a059]">*</span>
                     </label>
                     <input
                       id="student-name-field"
@@ -572,14 +572,14 @@ export default function App() {
                       value={studentName}
                       onChange={e => setStudentName(e.target.value)}
                       placeholder="اكتبي اسمكِ الكريم هنا..."
-                      className="w-full bg-transparent border-b-2 border-[#825c38]/50 focus:border-[#4a2a12] text-[#2d1b0f] font-semibold text-sm sm:text-base px-1 py-2 outline-none transition-colors placeholder-[#8c6b4e]"
+                      className="w-full bg-transparent border-b-2 border-[#295c3e]/40 focus:border-[#0c311c] text-[#072414] font-semibold text-sm sm:text-base px-1 py-2 outline-none transition-colors placeholder-[#4b7a5e]"
                     />
                   </div>
 
                   {/* رسالة الشكر بالإنجليزية */}
                   <div className="space-y-1">
-                    <label htmlFor="message-field" className="block text-xs sm:text-sm font-bold text-[#3d2312]">
-                      رسالة الشكر باللغة الإنجليزية (Message to soldiers in English) <span className="text-amber-800">*</span>
+                    <label htmlFor="message-field" className="block text-xs sm:text-sm font-bold text-[#0c311c]">
+                      رسالة الشكر باللغة الإنجليزية (Message to soldiers in English) <span className="text-[#c5a059]">*</span>
                     </label>
                     <textarea
                       id="message-field"
@@ -589,19 +589,19 @@ export default function App() {
                       value={messageEn}
                       onChange={e => setMessageEn(e.target.value)}
                       placeholder="Write your words of gratitude to the soldiers in English here..."
-                      className="w-full bg-transparent border border-[#825c38]/40 focus:border-[#4a2a12] rounded-xl p-3 text-[#1a0e08] font-en text-sm sm:text-base outline-none transition-colors leading-relaxed placeholder-[#8c6b4e] italic shadow-inner"
+                      className="w-full bg-transparent border border-[#295c3e]/30 focus:border-[#0c311c] rounded-xl p-3 text-[#072414] font-en text-sm sm:text-base outline-none transition-colors leading-relaxed placeholder-[#4b7a5e] italic shadow-inner"
                     />
                   </div>
 
                   {/* زر طي الرسالة وإعادتها إلى الظرف */}
-                  <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#9c7650]/30">
-                    <span className="text-xs text-[#633e24] font-medium text-center sm:text-right">
+                  <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#295c3e]/25">
+                    <span className="text-xs text-[#205234] font-medium text-center sm:text-right">
                       اكتبي رسالتكِ ثم انقري لإغلاق الظرف واختيار الختم
                     </span>
 
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-amber-100 bg-[#2b160d] hover:bg-[#3d1f12] active:scale-95 transition-all shadow-xl shadow-black/40 border border-amber-600/40 cursor-pointer text-sm"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-[#fcf6e8] bg-[#0a3821] hover:bg-[#0f4a2c] active:scale-95 transition-all shadow-xl shadow-black/40 border border-[#c5a059]/60 cursor-pointer text-sm"
                     >
                       <span>طي الورقة وإعادتها إلى الظرف</span>
                       <span>←</span>
@@ -625,9 +625,9 @@ export default function App() {
                         playTactileAudio('open_envelope');
                         setSimulationStage('writing');
                       }}
-                      className="text-xs text-[#d4af82] hover:text-amber-200 bg-[#241309] hover:bg-[#331c0e] px-4 py-2 rounded-xl border border-amber-700/40 cursor-pointer shadow-md transition-colors flex items-center gap-1.5"
+                      className="text-xs text-[#dfc484] hover:text-[#fef6dc] bg-[#072517] hover:bg-[#0c3521] px-4 py-2 rounded-xl border border-[#c5a059]/40 cursor-pointer shadow-md transition-colors flex items-center gap-1.5"
                     >
-                      <Edit3 className="w-3.5 h-3.5 text-amber-400" />
+                      <Edit3 className="w-3.5 h-3.5 text-[#e5c97d]" />
                       <span>إعادة فتح الورقة للتعديل</span>
                     </button>
                   )}
@@ -638,29 +638,29 @@ export default function App() {
                         playTactileAudio('box_open');
                         setIsSealModalOpen(true);
                       }}
-                      className="ml-auto flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-[#241308] font-bold text-xs sm:text-sm shadow-xl cursor-pointer active:scale-95 transition-all"
+                      className="ml-auto flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#c5a059] to-[#dfc484] hover:from-[#dfc484] hover:to-[#ebd69c] text-[#072013] font-bold text-xs sm:text-sm shadow-xl cursor-pointer active:scale-95 transition-all border border-[#dfc484]/70"
                     >
-                      <Shield className="w-4 h-4 text-[#241308]" />
+                      <Shield className="w-4 h-4 text-[#072013]" />
                       <span>اختيار الختم الشمعي</span>
                     </button>
                   )}
                 </div>
 
                 {/* مجسم الظرف المسكر على سطح المكتب */}
-                <div className="relative w-full royal-envelope-paper rounded-3xl p-8 sm:p-12 border-2 border-[#b89f7f] shadow-2xl flex flex-col items-center text-center overflow-hidden min-h-[340px]">
+                <div className="relative w-full royal-envelope-paper rounded-3xl p-8 sm:p-12 border-2 border-[#c5a059]/70 shadow-2xl flex flex-col items-center text-center overflow-hidden min-h-[340px]">
                   
                   {/* لسان الظرف المطوي لأسفل */}
                   <div
-                    className="absolute top-0 left-0 right-0 h-40 pointer-events-none border-b-2 border-[#9e8362] shadow-md"
+                    className="absolute top-0 left-0 right-0 h-40 pointer-events-none border-b-2 border-[#b38f46] shadow-md"
                     style={{
                       clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
-                      background: 'linear-gradient(180deg, #ddc7a9 0%, #caa981 100%)',
+                      background: 'linear-gradient(180deg, #ebdcb9 0%, #d8caa4 100%)',
                     }}
                   />
 
                   {/* اسم الطالبة مكتوب على الظرف */}
-                  <div className="relative z-10 text-xs font-bold text-[#452713] mt-2 font-amiri">
-                    رسالة مقدمة من الطالبة: <strong className="text-base text-[#241308]">{studentName}</strong>
+                  <div className="relative z-10 text-xs font-bold text-[#143922] mt-2 font-amiri">
+                    رسالة مقدمة من الطالبة: <strong className="text-base text-[#072413]">{studentName}</strong>
                   </div>
 
                   {/* مكان الختم الحقيقي في منتصف الظرف: تكبس عليه الطالبة لطبع الختم */}
@@ -672,18 +672,18 @@ export default function App() {
                         className="group relative flex flex-col items-center cursor-pointer transform hover:scale-105 active:scale-95 transition-all"
                         title="انقري هنا لطبع الختم الشمعي على الظرف"
                       >
-                        <div className="absolute -inset-4 rounded-full bg-amber-400/35 blur-md group-hover:bg-amber-400/60 animate-pulse pointer-events-none" />
+                        <div className="absolute -inset-4 rounded-full bg-[#dfc484]/35 blur-md group-hover:bg-[#dfc484]/60 animate-pulse pointer-events-none" />
 
                         {/* بقعة مكان الختم المسبقة في المنتصف */}
-                        <div className="relative w-24 h-24 rounded-full border-2 border-dashed border-[#8c6742] bg-[#cfba9c]/70 flex items-center justify-center text-xs text-[#452b17] font-bold shadow-inner transition-transform">
+                        <div className="relative w-24 h-24 rounded-full border-2 border-dashed border-[#b38f46] bg-[#dfd0b5]/70 flex items-center justify-center text-xs text-[#143922] font-bold shadow-inner transition-transform">
                           <RealisticWaxSeal
                             sealId={selectedSeal}
                             size={76}
-                            className="opacity-75 group-hover:opacity-100 transition-opacity drop-shadow-md"
+                            className="opacity-80 group-hover:opacity-100 transition-opacity drop-shadow-md"
                           />
                         </div>
 
-                        <span className="mt-4 px-6 py-2.5 rounded-xl bg-[#2e190f] text-amber-200 font-bold text-xs sm:text-sm shadow-lg group-hover:bg-[#422416] transition-all flex items-center gap-2 border border-amber-600/40">
+                        <span className="mt-4 px-6 py-2.5 rounded-xl bg-[#093520] text-[#fbf5e2] font-bold text-xs sm:text-sm shadow-lg group-hover:bg-[#0e482c] transition-all flex items-center gap-2 border border-[#c5a059]/60">
                           <span>انقري هنا لطبع الختم على الظرف</span>
                         </span>
                       </button>
@@ -692,7 +692,7 @@ export default function App() {
                     {simulationStage === 'stamping' && (
                       <div className="animate-stamp-press flex flex-col items-center">
                         <RealisticWaxSeal sealId={selectedSeal} size={92} />
-                        <span className="mt-3 text-amber-300 font-bold text-xs bg-black/80 px-4 py-1.5 rounded-full border border-amber-500/50 shadow-lg">
+                        <span className="mt-3 text-[#dfc484] font-bold text-xs bg-[#041a0f]/90 px-4 py-1.5 rounded-full border border-[#c5a059]/50 shadow-lg">
                           جاري طبع الختم الشمعي...
                         </span>
                       </div>
@@ -705,17 +705,17 @@ export default function App() {
                         </div>
                         
                         <div className="space-y-2">
-                          <p className="text-xs font-bold text-[#3d2312] bg-[#ebd8be] px-4 py-1 rounded-full border border-[#9c7650]/40 flex items-center justify-center gap-1.5">
+                          <p className="text-xs font-bold text-[#0c311c] bg-[#e6ddc8] px-4 py-1 rounded-full border border-[#c5a059]/40 flex items-center justify-center gap-1.5">
                             <Check className="w-3.5 h-3.5 text-emerald-800 inline" />
                             <span>تم طبع {currentSealConfig.title} بنجاح</span>
                           </p>
 
                           <button
                             onClick={handleDeliverToHeroes}
-                            className="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-800 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 active:scale-95 text-amber-100 font-bold text-sm shadow-xl shadow-black/50 border border-emerald-500/50 flex items-center gap-2 cursor-pointer transition-all"
+                            className="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-[#0d4a2b] via-[#105c36] to-[#0d4a2b] hover:from-[#105c36] hover:to-[#146e40] active:scale-95 text-[#fcf6e8] font-bold text-sm shadow-xl shadow-black/50 border border-[#dfc484]/60 flex items-center gap-2 cursor-pointer transition-all"
                           >
                             <span>إرسال الرسالة إلى جدار الأبطال</span>
-                            <Send className="w-4 h-4 text-amber-200" />
+                            <Send className="w-4 h-4 text-[#e5c97d]" />
                           </button>
                         </div>
                       </div>
@@ -723,7 +723,7 @@ export default function App() {
 
                   </div>
 
-                  <div className="relative z-10 flex items-center gap-2 text-xs text-[#5e381f] font-medium">
+                  <div className="relative z-10 flex items-center gap-2 text-xs text-[#205234] font-medium">
                     <span>الختم المختار: <strong>{currentSealConfig.title}</strong></span>
                     {simulationStage === 'folded' && (
                       <button
@@ -731,7 +731,7 @@ export default function App() {
                           playTactileAudio('box_open');
                           setIsSealModalOpen(true);
                         }}
-                        className="underline text-[#3a200f] font-bold hover:text-black cursor-pointer"
+                        className="underline text-[#0c311c] font-bold hover:text-black cursor-pointer"
                       >
                         (تغيير الختم)
                       </button>
@@ -750,20 +750,20 @@ export default function App() {
         {/* =========================================================================
             3. جدار الرسائل المختومة للأبطال (GALLERY - يبدأ فارغاً تماماً)
             ========================================================================= */}
-        <section id="gallery-section" className="pt-8 border-t border-amber-900/40 space-y-6">
+        <section id="gallery-section" className="pt-8 border-t border-[#c5a059]/25 space-y-6">
           
           <div className="flex items-center justify-between pb-2">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-amber-200 font-amiri flex items-center gap-2">
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#f5e6be] font-amiri flex items-center gap-2">
                 <span>جدار الرسائل المختومة للأبطال</span>
               </h2>
-              <p className="text-xs sm:text-sm text-amber-400/80">
+              <p className="text-xs sm:text-sm text-emerald-200/80">
                 انقري على أي ظرف مصغر لفتحه وقراءة رسالة الشكر
               </p>
             </div>
-            <div className="flex items-center gap-2 bg-[#1f100a] px-4 py-2 rounded-xl border border-amber-700/60 shadow-sm">
-              <span className="text-xs sm:text-sm text-amber-400 font-semibold">عدد الأظرف:</span>
-              <strong className="text-xs sm:text-sm text-amber-200 font-bold bg-amber-950/80 px-2.5 py-0.5 rounded-lg border border-amber-700/50 font-mono">
+            <div className="flex items-center gap-2 bg-[#062416] px-4 py-2 rounded-xl border border-[#c5a059]/50 shadow-sm">
+              <span className="text-xs sm:text-sm text-[#dfc484] font-semibold">عدد الأظرف:</span>
+              <strong className="text-xs sm:text-sm text-[#fdfaf1] font-bold bg-[#03170e] px-2.5 py-0.5 rounded-lg border border-[#c5a059]/40 font-mono">
                 {savedEnvelopes.length} {savedEnvelopes.length === 1 ? 'ظرف' : savedEnvelopes.length > 2 && savedEnvelopes.length < 11 ? 'أظرف' : 'ظرف'}
               </strong>
             </div>
@@ -771,14 +771,14 @@ export default function App() {
 
           {/* Clean Slate: يبدأ فارغاً تماماً */}
           {savedEnvelopes.length === 0 ? (
-            <div className="text-center py-16 px-4 rounded-3xl border border-dashed border-amber-900/60 bg-[#160b07]/70 text-amber-400/70 space-y-3">
-              <div className="w-14 h-14 mx-auto rounded-full bg-amber-950/40 border border-amber-800/40 flex items-center justify-center">
-                <Mail className="w-7 h-7 text-amber-400/70" />
+            <div className="text-center py-16 px-4 rounded-3xl border border-dashed border-emerald-800/40 bg-[#041a10]/75 text-emerald-300/80 space-y-3">
+              <div className="w-14 h-14 mx-auto rounded-full bg-[#072819] border border-[#c5a059]/40 flex items-center justify-center">
+                <Mail className="w-7 h-7 text-[#e5c97d]" />
               </div>
-              <p className="text-base font-bold text-amber-200 font-amiri">
+              <p className="text-base font-bold text-[#f5e6be] font-amiri">
                 جدار الرسائل خالٍ تماماً بانتظار مشاركتكِ الأولى
               </p>
-              <p className="text-xs text-amber-400/80 max-w-md mx-auto">
+              <p className="text-xs text-emerald-200/75 max-w-md mx-auto">
                 انقري على الظرف بالأعلى لفتحه وإخراج الورقة، واكتبي رسالتكِ باللغة الإنجليزية واختاري ختمكِ المفضل لتنضم إلى رسائل الفخر.
               </p>
             </div>
@@ -798,28 +798,28 @@ export default function App() {
                     animationDuration: `${3.8 + (index % 3) * 0.6}s`,
                   }}
                 >
-                  <div className="relative royal-envelope-paper rounded-2xl p-5 border border-[#ab9273] shadow-xl flex flex-col justify-between min-h-[185px] overflow-hidden">
+                  <div className="relative royal-envelope-paper rounded-2xl p-5 border border-[#c5a059]/70 shadow-xl flex flex-col justify-between min-h-[185px] overflow-hidden">
                     
                     {/* ثنية لسان الظرف */}
                     <div
-                      className="absolute top-0 left-0 right-0 h-16 pointer-events-none border-b border-[#a68e6d]"
+                      className="absolute top-0 left-0 right-0 h-16 pointer-events-none border-b border-[#b38f46]"
                       style={{
                         clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
-                        background: 'linear-gradient(180deg, #ddc7a9 0%, #caa981 100%)',
+                        background: 'linear-gradient(180deg, #ebdcb9 0%, #d8caa4 100%)',
                       }}
                     />
 
                     {/* اسم الطالبة ورقم الظرف */}
-                    <div className="relative z-10 flex items-center justify-between border-b border-[#a89070]/40 pb-1.5 gap-2">
+                    <div className="relative z-10 flex items-center justify-between border-b border-[#295c3e]/20 pb-1.5 gap-2">
                       <div className="flex items-center gap-1.5 truncate">
-                        <span className="text-[10px] text-[#54341c] bg-[#e2d0b8] font-mono px-1.5 py-0.5 rounded border border-[#bfab90] font-bold shrink-0">
+                        <span className="text-[10px] text-[#0a2918] bg-[#dfd0b5] font-mono px-1.5 py-0.5 rounded border border-[#b38f46] font-bold shrink-0">
                           ظرف #{savedEnvelopes.length - index}
                         </span>
-                        <span className="font-bold text-[#3d2312] text-sm truncate font-amiri">
+                        <span className="font-bold text-[#0a2918] text-sm truncate font-amiri">
                           {item.studentName}
                         </span>
                       </div>
-                      <span className="text-[10px] text-[#6b472e] bg-[#e5d5be] px-2 py-0.5 rounded-full border border-[#bfa686] shrink-0">
+                      <span className="text-[10px] text-[#1e442c] bg-[#e8dcbf] px-2 py-0.5 rounded-full border border-[#c5a059]/50 shrink-0">
                         المتوسطة الأولى بالراكة
                       </span>
                     </div>
@@ -832,8 +832,8 @@ export default function App() {
                     </div>
 
                     {/* زر فض الختم وقراءة الرسالة + الإعجاب */}
-                    <div className="relative z-10 flex items-center justify-between pt-2 border-t border-[#a89070]/40 text-xs">
-                      <span className="text-[11px] text-[#52331c] group-hover:underline font-semibold">
+                    <div className="relative z-10 flex items-center justify-between pt-2 border-t border-[#295c3e]/20 text-xs">
+                      <span className="text-[11px] text-[#18462b] group-hover:text-[#0b6335] group-hover:underline font-semibold">
                         انقري لفتح وقراءة الرسالة ←
                       </span>
 
@@ -841,8 +841,8 @@ export default function App() {
                         onClick={(e) => handleToggleLike(item.id, e)}
                         className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                           item.isLiked
-                            ? 'bg-rose-900/40 text-rose-300 border border-rose-500/50'
-                            : 'bg-black/30 text-[#452b18] hover:text-rose-600'
+                            ? 'bg-rose-950/70 text-rose-300 border border-rose-500/50'
+                            : 'bg-[#03170e]/70 text-[#18462b] hover:text-rose-600'
                         }`}
                       >
                         <Heart className={`w-3.5 h-3.5 ${item.isLiked ? 'fill-rose-500 text-rose-500' : ''}`} />
@@ -865,7 +865,7 @@ export default function App() {
           ========================================================================= */}
       {isSealModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="relative w-full max-w-xl bg-[#1c0e08] border-2 border-amber-600/60 rounded-3xl p-6 sm:p-8 text-center shadow-[0_0_60px_rgba(0,0,0,0.95)] space-y-6">
+          <div className="relative w-full max-w-xl bg-[#041910] border-2 border-[#c5a059]/50 rounded-3xl p-6 sm:p-8 text-center shadow-[0_0_60px_rgba(0,0,0,0.95)] space-y-6">
             
             {/* زر إغلاق النافذة */}
             <button
@@ -873,21 +873,21 @@ export default function App() {
                 playTactileAudio('box_open');
                 setIsSealModalOpen(false);
               }}
-              className="absolute top-4 left-4 p-2 rounded-full bg-[#2e170f] hover:bg-[#422216] text-amber-200 transition-colors cursor-pointer"
+              className="absolute top-4 left-4 p-2 rounded-full bg-[#072617] hover:bg-[#0c3922] text-[#fbf3d8] transition-colors cursor-pointer border border-[#c5a059]/30"
             >
               <X className="w-5 h-5" />
             </button>
 
             {/* ترويسة نافذة اختيار الختم */}
             <div className="space-y-1.5 pt-2">
-              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#2b160d] border border-amber-500/40 text-amber-300 text-xs font-bold">
-                <Shield className="w-3.5 h-3.5 text-amber-400" />
+              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#072819] border border-[#c5a059]/40 text-[#dfc484] text-xs font-bold">
+                <Shield className="w-3.5 h-3.5 text-[#e5c97d]" />
                 <span>الأختام الشمعية الملكية</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-amber-100 font-amiri">
+              <h3 className="text-2xl sm:text-3xl font-black text-[#fef6dc] font-amiri">
                 اختاري الختم لطبعه على الظرف
               </h3>
-              <p className="text-xs text-amber-300/80 max-w-md mx-auto">
+              <p className="text-xs text-emerald-200/80 max-w-md mx-auto">
                 انقري على الختم المفضل لديكِ ثم اضغطي تأكيد ليتم تجهيزه للطبع على الظرف.
               </p>
             </div>
@@ -905,25 +905,25 @@ export default function App() {
                     }}
                     className={`w-full p-4 rounded-2xl border-2 flex items-center gap-4 transition-all cursor-pointer text-right ${
                       isSelected
-                        ? 'bg-[#2f180d] border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.35)] scale-[1.02]'
-                        : 'bg-[#140905] border-amber-950/70 hover:border-amber-700/60 opacity-85 hover:opacity-100'
+                        ? 'bg-[#093520] border-[#dfc484] shadow-[0_0_20px_rgba(212,175,55,0.3)] scale-[1.02]'
+                        : 'bg-[#03140c] border-[#c5a059]/25 hover:border-[#c5a059]/60 opacity-90 hover:opacity-100'
                     }`}
                   >
                     <RealisticWaxSeal sealId={seal.id} size={58} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <p className={`font-bold text-sm sm:text-base ${isSelected ? 'text-amber-100' : 'text-amber-200'}`}>
+                        <p className={`font-bold text-sm sm:text-base ${isSelected ? 'text-[#fef6dc]' : 'text-emerald-100'}`}>
                           {seal.title}
                         </p>
                         {isSelected && (
-                          <span className="text-amber-300 text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-900/60 border border-amber-500/50 flex items-center gap-1">
-                            <Check className="w-3 h-3 text-amber-300 inline" />
+                          <span className="text-[#dfc484] text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#051c11] border border-[#c5a059]/60 flex items-center gap-1">
+                            <Check className="w-3 h-3 text-[#dfc484] inline" />
                             <span>مُختار</span>
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-amber-400/90 font-medium">{seal.subtitle}</p>
-                      <p className="text-[11px] text-amber-500/70 pt-0.5">{seal.description}</p>
+                      <p className="text-xs text-emerald-300/90 font-medium">{seal.subtitle}</p>
+                      <p className="text-[11px] text-[#c5a059]/80 pt-0.5">{seal.description}</p>
                     </div>
                   </div>
                 );
@@ -937,10 +937,10 @@ export default function App() {
                   playTactileAudio('stamp');
                   setIsSealModalOpen(false);
                 }}
-                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-[#241308] font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#c5a059] via-[#dfc484] to-[#c5a059] hover:from-[#dfc484] hover:to-[#ebd69c] text-[#072013] font-black text-sm sm:text-base shadow-xl active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2 border border-[#fef08a]/60"
               >
                 <span>تأكيد اختيار الختم والعودة للظرف</span>
-                <Check className="w-4 h-4 text-[#241308]" />
+                <Check className="w-4 h-4 text-[#072013]" />
               </button>
             </div>
 
@@ -953,27 +953,27 @@ export default function App() {
           ========================================================================= */}
       {inspectingLetter && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="relative w-full max-w-xl official-letter-paper rounded-3xl p-6 sm:p-8 border-2 border-[#b89f7f] shadow-2xl text-[#2d1b0f] space-y-6">
+          <div className="relative w-full max-w-xl official-letter-paper rounded-3xl p-6 sm:p-8 border-2 border-[#c5a059] shadow-2xl text-[#11311f] space-y-6">
             
             <button
               onClick={() => {
                 playTactileAudio('open_envelope');
                 setInspectingLetter(null);
               }}
-              className="absolute top-4 left-4 p-2 rounded-full bg-[#dcc4a4]/60 hover:bg-[#caa981] text-[#3d2312] transition-colors cursor-pointer"
+              className="absolute top-4 left-4 p-2 rounded-full bg-[#dfd0b5]/70 hover:bg-[#cfbe9f] text-[#0c311c] transition-colors cursor-pointer border border-[#c5a059]/40"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <div className="flex items-center justify-between border-b border-[#9c7650]/40 pb-4 text-xs font-semibold">
+            <div className="flex items-center justify-between border-b border-[#295c3e]/25 pb-4 text-xs font-semibold">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[11px] text-[#54341c] bg-[#e2d0b8] font-mono px-2 py-0.5 rounded border border-[#bfab90] font-bold">
+                  <span className="text-[11px] text-[#0a2918] bg-[#dfd0b5] font-mono px-2 py-0.5 rounded border border-[#b38f46] font-bold">
                     ظرف #{savedEnvelopes.findIndex(e => e.id === inspectingLetter.id) >= 0 ? savedEnvelopes.length - savedEnvelopes.findIndex(e => e.id === inspectingLetter.id) : 1}
                   </span>
-                  <p className="font-bold text-[#3a200f] text-lg font-amiri">{inspectingLetter.studentName}</p>
+                  <p className="font-bold text-[#0c311c] text-lg font-amiri">{inspectingLetter.studentName}</p>
                 </div>
-                <p className="text-[#6b472e]">المتوسطة الأولى بالراكة</p>
+                <p className="text-[#205234]">المتوسطة الأولى بالراكة</p>
               </div>
               <div className="flex items-center gap-2">
                 <RealisticWaxSeal sealId={inspectingLetter.sealId} size={48} />
@@ -981,24 +981,24 @@ export default function App() {
             </div>
 
             <div className="space-y-2">
-              <span className="text-xs font-bold text-[#5c371d] uppercase tracking-wider block">
+              <span className="text-xs font-bold text-[#1f4e32] uppercase tracking-wider block">
                 Message of appreciation to our brave soldiers:
               </span>
               <div
-                className="bg-transparent p-4 rounded-xl border border-[#9c7650]/30 text-base sm:text-lg font-en text-[#1a0e08] leading-relaxed italic shadow-inner"
+                className="bg-transparent p-4 rounded-xl border border-[#295c3e]/25 text-base sm:text-lg font-en text-[#072414] leading-relaxed italic shadow-inner"
                 dir="ltr"
               >
                 "{inspectingLetter.messageEn}"
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-4 border-t border-[#9c7650]/40">
+            <div className="flex items-center justify-between pt-4 border-t border-[#295c3e]/25">
               <button
                 onClick={() => handleToggleLike(inspectingLetter.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer ${
                   inspectingLetter.isLiked
                     ? 'bg-rose-700 text-white shadow-md'
-                    : 'bg-[#d8c2a3] hover:bg-rose-100 text-rose-900 border border-rose-300 shadow-xs'
+                    : 'bg-[#dfd0b5] hover:bg-rose-100 text-rose-900 border border-rose-300 shadow-xs'
                 }`}
               >
                 <Heart className={`w-4 h-4 ${inspectingLetter.isLiked ? 'fill-current' : ''}`} />
@@ -1010,7 +1010,7 @@ export default function App() {
                   playTactileAudio('open_envelope');
                   setInspectingLetter(null);
                 }}
-                className="px-5 py-2 rounded-xl bg-[#2e190f] text-amber-200 font-bold text-xs hover:bg-[#422416] transition-colors cursor-pointer"
+                className="px-5 py-2 rounded-xl bg-[#093520] text-[#fcf6e8] font-bold text-xs hover:bg-[#0e482c] border border-[#c5a059]/50 transition-colors cursor-pointer"
               >
                 إعادة إغلاق الرسالة
               </button>
@@ -1023,17 +1023,17 @@ export default function App() {
       {/* =========================================================================
           6. التوثيق المدرسي في التذييل (Footer)
           ========================================================================= */}
-      <footer className="mt-16 bg-[#0a0503] border-t border-amber-900/40 py-8 text-center text-xs sm:text-sm text-amber-300/80 backdrop-blur-md">
+      <footer className="mt-16 bg-[#020b06] border-t border-[#c5a059]/25 py-8 text-center text-xs sm:text-sm text-emerald-300/80 backdrop-blur-md">
         <div className="max-w-4xl mx-auto px-4 space-y-2">
-          <p className="font-bold text-amber-200 text-base font-amiri">
+          <p className="font-bold text-[#f5e6be] text-base font-amiri">
             المتوسطة الأولى بالراكة
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-amber-400/70">
-            <span>مديرة المدرسة: <strong className="text-amber-200">أريج الحماد</strong></span>
-            <span className="hidden sm:inline text-amber-700">•</span>
-            <span>معلمة المادة: <strong className="text-amber-200">مها آل غرير</strong></span>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-emerald-200/75">
+            <span>مديرة المدرسة: <strong className="text-[#dfc484]">أريج الحماد</strong></span>
+            <span className="hidden sm:inline text-[#876e39]">•</span>
+            <span>معلمة المادة: <strong className="text-[#dfc484]">مها آل غرير</strong></span>
           </div>
-          <p className="text-[11px] text-amber-600 pt-1">
+          <p className="text-[11px] text-[#c5a059]/80 pt-1">
             مبادرة شكراً حماة الوطن • نظام رسائل الفخر والأختام الشمعية
           </p>
         </div>
