@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { Heart, X, Feather, Mail, Check, Send, Edit3, Shield } from 'lucide-react';
 
@@ -302,8 +302,24 @@ export default function App() {
   const [studentName, setStudentName] = useState('');
   const [messageEn, setMessageEn] = useState('');
 
-  // Gallery of sealed envelopes (starts completely empty)
   const [savedEnvelopes, setSavedEnvelopes] = useState<SavedEnvelope[]>([]);
+
+  useEffect(() => {
+    fetch('/api/messages')
+      .then(response => response.ok ? response.json() : Promise.reject(new Error('load failed')))
+      .then((rows: Array<{id: string; student_name: string; message_en: string; seal_id: SealId; likes: number; created_at: string}>) => {
+        setSavedEnvelopes(rows.map(row => ({
+          id: row.id,
+          studentName: row.student_name,
+          messageEn: row.message_en,
+          sealId: row.seal_id,
+          likes: row.likes,
+          isLiked: false,
+          timestamp: new Date(row.created_at).toLocaleString('ar-SA'),
+        })));
+      })
+      .catch(() => setSavedEnvelopes([]));
+  }, []);
 
   // Modal for reading any student envelope from gallery
   const [inspectingLetter, setInspectingLetter] = useState<SavedEnvelope | null>(null);
@@ -341,7 +357,7 @@ export default function App() {
   };
 
   // 4. Deliver the sealed letter to the heroes wall
-  const handleDeliverToHeroes = () => {
+  const handleDeliverToHeroes = async () => {
     playTactileAudio('stamp');
 
     const newLetter: SavedEnvelope = {
@@ -354,6 +370,12 @@ export default function App() {
       timestamp: 'الآن',
     };
 
+    const response = await fetch('/api/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({id: newLetter.id, student_name: newLetter.studentName, message_en: newLetter.messageEn, seal_id: newLetter.sealId, likes: 0}),
+    });
+    if (!response.ok) return;
     setSavedEnvelopes(prev => [newLetter, ...prev]);
     setStudentName('');
     setMessageEn('');
@@ -380,6 +402,11 @@ export default function App() {
           if (inspectingLetter && inspectingLetter.id === id) {
             setInspectingLetter(updated);
           }
+          fetch('/api/messages', {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id, likes: updated.likes}),
+          }).catch(() => undefined);
           return updated;
         }
         return item;
