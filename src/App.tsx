@@ -141,7 +141,7 @@ const playTactileAudio = (type: 'open_envelope' | 'fold' | 'box_open' | 'stamp' 
   } catch {}
 };
 
-// Hyper-realistic 3D Melted Wax Seal SVG Component (No emojis)
+// Hyper-realistic 3D Melted Wax Seal SVG Component
 export const RealisticWaxSeal: React.FC<{
   sealId: SealId;
   size?: number;
@@ -282,56 +282,42 @@ export const RealisticWaxSeal: React.FC<{
 };
 
 export default function App() {
-  // Modal for selecting wax seal
   const [isSealModalOpen, setIsSealModalOpen] = useState(false);
-
-  // Simulation Stage:
-  // 'closed_initial' -> envelope is closed on desk
-  // 'writing' -> paper extracted on desk for writing
-  // 'folded' -> paper put back in envelope, ready to stamp
-  // 'stamping' -> pressing seal animation
-  // 'sealed_ready' -> sealed with wax, ready to deliver
   const [simulationStage, setSimulationStage] = useState<
     'closed_initial' | 'writing' | 'folded' | 'stamping' | 'sealed_ready'
   >('closed_initial');
 
-  // Selected Wax Seal
   const [selectedSeal, setSelectedSeal] = useState<SealId>('emblem');
-
-  // Input states
   const [studentName, setStudentName] = useState('');
   const [messageEn, setMessageEn] = useState('');
-
-  const [savedEnvelopes, setSavedEnvelopes] = useState<SavedEnvelope[]>([]);
   const [submitError, setSubmitError] = useState('');
-
-  useEffect(() => {
-    fetch('/api/messages')
-      .then(response => response.ok ? response.json() : Promise.reject(new Error('load failed')))
-      .then((rows: Array<{id: string; student_name: string; message_en: string; seal_id: SealId; likes: number; created_at: string}>) => {
-        setSavedEnvelopes(rows.map(row => ({
-          id: row.id,
-          studentName: row.student_name,
-          messageEn: row.message_en,
-          sealId: row.seal_id,
-          likes: row.likes,
-          isLiked: false,
-          timestamp: new Date(row.created_at).toLocaleString('ar-SA'),
-        })));
-      })
-      .catch(() => setSavedEnvelopes([]));
-  }, []);
-
-  // Modal for reading any student envelope from gallery
   const [inspectingLetter, setInspectingLetter] = useState<SavedEnvelope | null>(null);
 
-  // 1. Open the closed envelope and extract paper smoothly
+  // تحميل الرسائل من ذاكرة المتصفح الدائمة مباشرة
+  const [savedEnvelopes, setSavedEnvelopes] = useState<SavedEnvelope[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('homat_alwatan_envelopes');
+        if (stored) return JSON.parse(stored);
+      } catch {}
+    }
+    return [];
+  });
+
+  // حفظ تلقائي في ذاكرة المتصفح عند أي تحديث للأظرف
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('homat_alwatan_envelopes', JSON.stringify(savedEnvelopes));
+      } catch {}
+    }
+  }, [savedEnvelopes]);
+
   const handleOpenEnvelope = () => {
     playTactileAudio('open_envelope');
     setSimulationStage('writing');
   };
 
-  // 2. Fold the letter paper back into the envelope
   const handleFoldLetter = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError('');
@@ -339,7 +325,6 @@ export default function App() {
     setSimulationStage('folded');
   };
 
-  // 3. Stamp the hot wax onto the envelope flap
   const handleStampWaxOnEnvelope = () => {
     if (simulationStage !== 'folded') return;
     playTactileAudio('stamp');
@@ -357,8 +342,8 @@ export default function App() {
     }, 750);
   };
 
-  // 4. Deliver the sealed letter to the heroes wall
-  const handleDeliverToHeroes = async () => {
+  // إرسال الرسالة وحفظها دائماً في ذاكرة المتصفح
+  const handleDeliverToHeroes = () => {
     playTactileAudio('stamp');
     setSubmitError('');
 
@@ -369,61 +354,50 @@ export default function App() {
       sealId: selectedSeal || 'emblem',
       likes: 0,
       isLiked: false,
-      timestamp: 'الآن',
+      timestamp: new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }),
     };
 
-    // Update the wall immediately so a slow or unavailable API never traps the student.
-    setSavedEnvelopes(prev => [newLetter, ...prev.filter(item => item.id !== newLetter.id)]);
+    setSavedEnvelopes(prev => {
+      const updated = [newLetter, ...prev.filter(item => item.id !== newLetter.id)];
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('homat_alwatan_envelopes', JSON.stringify(updated));
+      }
+      return updated;
+    });
+
     setStudentName('');
     setMessageEn('');
     setSimulationStage('closed_initial');
-
-    try {
-      const controller = new AbortController();
-      const timeout = window.setTimeout(() => controller.abort(), 8000);
-      const response = await fetch('/api/messages', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({id: newLetter.id, student_name: newLetter.studentName, message_en: newLetter.messageEn, seal_id: newLetter.sealId, likes: 0}),
-        signal: controller.signal,
-      });
-      window.clearTimeout(timeout);
-      if (!response.ok) throw new Error('save failed');
-    } catch {
-      setSubmitError('تم عرض الرسالة على الجدار، لكن تعذر حفظها سحابياً حالياً. يرجى المحاولة لاحقاً.');
-    }
 
     setTimeout(() => {
       document.getElementById('gallery-section')?.scrollIntoView({ behavior: 'smooth' });
     }, 300);
   };
 
-  // Toggle Like on letters
   const handleToggleLike = (id: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     playTactileAudio('heart');
-    setSavedEnvelopes(prev =>
-      prev.map(item => {
+    setSavedEnvelopes(prev => {
+      const updated = prev.map(item => {
         if (item.id === id) {
           const isLiked = !item.isLiked;
-          const updated = {
+          const letterUpdated = {
             ...item,
             isLiked,
             likes: isLiked ? item.likes + 1 : Math.max(0, item.likes - 1),
           };
           if (inspectingLetter && inspectingLetter.id === id) {
-            setInspectingLetter(updated);
+            setInspectingLetter(letterUpdated);
           }
-          fetch('/api/messages', {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id, likes: updated.likes}),
-          }).catch(() => undefined);
-          return updated;
+          return letterUpdated;
         }
         return item;
-      })
-    );
+      });
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('homat_alwatan_envelopes', JSON.stringify(updated));
+      }
+      return updated;
+    });
   };
 
   const currentSealConfig = WAX_SEALS_CONFIG.find(s => s.id === selectedSeal) || WAX_SEALS_CONFIG[0];
@@ -431,26 +405,16 @@ export default function App() {
   return (
     <div className="min-h-screen royal-emerald-gold-bg text-[#fcf8ec] flex flex-col font-cairo selection:bg-emerald-900 selection:text-amber-100 relative overflow-x-hidden">
       
-      {/* =========================================================================
-          1. أول شيء: ترويسة المبادرة والمشرفين (اسم المبادرة والمشرفين أول شيء في المقدمة)
-          ========================================================================= */}
       <header className="pt-8 pb-4 px-4 sm:px-6 text-center">
         <div className="max-w-4xl mx-auto space-y-4">
-          
-          {/* اسم المبادرة الرئيسي أول شيء في المقدمة بارز بتدرج ذهبي راقٍ وخفيف */}
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#fff6d6] via-[#e5c97d] to-[#d4af37] tracking-tight leading-tight drop-shadow-[0_2px_15px_rgba(0,0,0,0.85)] font-amiri">
             مبادرة: شكراً حماة الوطن
           </h1>
 
-          {/* الهدف باللغة الإنجليزية بلمسة ذهبية ناعمة */}
-          <p
-            className="text-[#edd9a3]/90 font-en text-sm sm:text-base md:text-lg font-medium tracking-wide max-w-2xl mx-auto leading-relaxed drop-shadow-sm italic"
-            dir="ltr"
-          >
+          <p className="text-[#edd9a3]/90 font-en text-sm sm:text-base md:text-lg font-medium tracking-wide max-w-2xl mx-auto leading-relaxed drop-shadow-sm italic" dir="ltr">
             "Write a message of thank and appreciation to the soldiers in English"
           </p>
 
-          {/* بطاقة المشرفين الرسمية وإحصائية عدد الأظرف بارزة في المقدمة بالأخضر الزمردي والذهب الخفيف */}
           <div className="max-w-3xl mx-auto p-4 rounded-2xl bg-[#061f14]/85 border border-[#c5a059]/40 shadow-2xl backdrop-blur-md flex flex-wrap items-center justify-around gap-4 text-xs sm:text-sm text-[#ecdab2]">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-[#dfc484]">المدرسة:</span>
@@ -482,16 +446,11 @@ export default function App() {
               </strong>
             </button>
           </div>
-
         </div>
       </header>
 
-      {/* =========================================================================
-          2. مساحة المحاكاة: اكتب رسالتك ويبين الظرف مباشرة على سطح المكتب
-          ========================================================================= */}
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-4 space-y-14">
         
-        {/* عنوان مساحة كتابة الرسالة وإحصائية عدد الأظرف */}
         <div className="text-center space-y-2.5">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#062416]/90 border border-[#c5a059]/45 text-xs sm:text-sm text-[#edd9a3] shadow-lg">
             <Mail className="w-4 h-4 text-[#e5c97d]" />
@@ -509,19 +468,14 @@ export default function App() {
         </div>
 
         <div className="flex flex-col items-center justify-center">
-
-          {/* مجسم الظرف والورقة على سطح المكتب */}
           <div className="w-full max-w-2xl flex flex-col items-center">
             
-            {/* الحالة 1: الظرف مسكر في البداية وتفتحه الطالبة فتخرج الورقة بمشهد واقعي */}
             {simulationStage === 'closed_initial' && (
               <div className="w-full flex flex-col items-center animate-in zoom-in-95 duration-500">
                 <div
                   onClick={handleOpenEnvelope}
                   className="group relative w-full royal-envelope-paper rounded-3xl p-8 sm:p-14 border-2 border-[#c5a059]/70 shadow-2xl flex flex-col items-center text-center overflow-hidden min-h-[340px] cursor-pointer hover:border-[#dfc484] transition-all"
                 >
-                  
-                  {/* لسان الظرف المسكر لأسفل مع حافة ذهبية رقيقة */}
                   <div
                     className="absolute top-0 left-0 right-0 h-40 pointer-events-none border-b-2 border-[#b38f46] shadow-md group-hover:brightness-105 transition-all"
                     style={{
@@ -530,12 +484,10 @@ export default function App() {
                     }}
                   />
 
-                  {/* نص التوجيه فوق الظرف */}
                   <div className="relative z-10 text-xs font-bold text-[#143922] mt-2 font-amiri">
                     المتوسطة الأولى بالراكة • ظرف رسالة فخر واعتزاز لحماة الوطن
                   </div>
 
-                  {/* زر النقر لفتح الظرف وإخراج الورقة */}
                   <div className="relative z-10 my-auto pt-10 pb-4 flex flex-col items-center">
                     <div className="w-20 h-20 rounded-full bg-[#dfd0b5]/80 border-2 border-[#b38f46] flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform">
                       <Mail className="w-10 h-10 text-[#143922]" />
@@ -550,16 +502,12 @@ export default function App() {
                   <p className="relative z-10 text-xs text-[#2b4c37] font-semibold">
                     انقري هنا ليفتح الظرف وتنزلق الورقة لكتابة رسالتكِ
                   </p>
-
                 </div>
               </div>
             )}
 
-            {/* الحالة 2: ورقة الرسالة مفتوحة على سطح المكتب للكتابة */}
             {simulationStage === 'writing' && (
               <div className="w-full official-letter-paper rounded-3xl p-6 sm:p-10 text-[#11311f] shadow-2xl border border-[#c5a059] animate-paper-extract">
-                
-                {/* ترويسة الورقة الرسمية */}
                 <div className="flex items-center justify-between border-b border-[#295c3e]/30 pb-3 mb-6 text-xs font-semibold">
                   <div className="text-right">
                     <p className="font-bold text-[#0c311c] text-sm font-amiri">المملكة العربية السعودية</p>
@@ -570,14 +518,13 @@ export default function App() {
                   </div>
                 </div>
 
-                  <form onSubmit={handleFoldLetter} className="space-y-6 text-right">
-                    {submitError && (
-                      <p role="alert" className="rounded-xl border border-amber-700/40 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950">
-                        {submitError}
-                      </p>
-                    )}
+                <form onSubmit={handleFoldLetter} className="space-y-6 text-right">
+                  {submitError && (
+                    <p role="alert" className="rounded-xl border border-amber-700/40 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950">
+                      {submitError}
+                    </p>
+                  )}
 
-                    {/* اسم الطالبة */}
                   <div className="space-y-1">
                     <label htmlFor="student-name-field" className="block text-xs sm:text-sm font-bold text-[#0c311c]">
                       اسم الطالبة (Student Name) <span className="text-[#c5a059]">*</span>
@@ -593,7 +540,6 @@ export default function App() {
                     />
                   </div>
 
-                  {/* رسالة الشكر بالإنجليزية */}
                   <div className="space-y-1">
                     <label htmlFor="message-field" className="block text-xs sm:text-sm font-bold text-[#0c311c]">
                       رسالة الشكر باللغة الإنجليزية (Message to soldiers in English) <span className="text-[#c5a059]">*</span>
@@ -610,7 +556,6 @@ export default function App() {
                     />
                   </div>
 
-                  {/* زر طي الرسالة وإعادتها إلى الظرف */}
                   <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#295c3e]/25">
                     <span className="text-xs text-[#205234] font-medium text-center sm:text-right">
                       اكتبي رسالتكِ ثم انقري لإغلاق الظرف واختيار الختم
@@ -624,17 +569,13 @@ export default function App() {
                       <span>←</span>
                     </button>
                   </div>
-
                 </form>
-
               </div>
             )}
 
-            {/* الحالة 3: الظرف مسكر على الطاولة بانتظار اختيار الختم من النافذة وطبعه */}
             {(simulationStage === 'folded' || simulationStage === 'stamping' || simulationStage === 'sealed_ready') && (
               <div className="w-full flex flex-col items-center animate-in zoom-in-95 duration-500 space-y-6">
                 
-                {/* شريط التحكم: زر نافذة الختم وزر تعديل الرسالة */}
                 <div className="w-full flex flex-wrap items-center justify-between gap-3 px-2">
                   {simulationStage === 'folded' && (
                     <button
@@ -663,10 +604,7 @@ export default function App() {
                   )}
                 </div>
 
-                {/* مجسم الظرف المسكر على سطح المكتب */}
                 <div className="relative w-full royal-envelope-paper rounded-3xl p-8 sm:p-12 border-2 border-[#c5a059]/70 shadow-2xl flex flex-col items-center text-center overflow-hidden min-h-[340px]">
-                  
-                  {/* لسان الظرف المطوي لأسفل */}
                   <div
                     className="absolute top-0 left-0 right-0 h-40 pointer-events-none border-b-2 border-[#b38f46] shadow-md"
                     style={{
@@ -675,14 +613,11 @@ export default function App() {
                     }}
                   />
 
-                  {/* اسم الطالبة مكتوب على الظرف */}
                   <div className="relative z-10 text-xs font-bold text-[#143922] mt-2 font-amiri">
                     رسالة مقدمة من الطالبة: <strong className="text-base text-[#072413]">{studentName}</strong>
                   </div>
 
-                  {/* مكان الختم الحقيقي في منتصف الظرف: تكبس عليه الطالبة لطبع الختم */}
                   <div className="relative z-10 my-auto pt-8 pb-3 flex flex-col items-center">
-                    
                     {simulationStage === 'folded' && (
                       <button
                         onClick={handleStampWaxOnEnvelope}
@@ -691,7 +626,6 @@ export default function App() {
                       >
                         <div className="absolute -inset-4 rounded-full bg-[#dfc484]/35 blur-md group-hover:bg-[#dfc484]/60 animate-pulse pointer-events-none" />
 
-                        {/* بقعة مكان الختم المسبقة في المنتصف */}
                         <div className="relative w-24 h-24 rounded-full border-2 border-dashed border-[#b38f46] bg-[#dfd0b5]/70 flex items-center justify-center text-xs text-[#143922] font-bold shadow-inner transition-transform">
                           <RealisticWaxSeal
                             sealId={selectedSeal}
@@ -737,7 +671,6 @@ export default function App() {
                         </div>
                       </div>
                     )}
-
                   </div>
 
                   <div className="relative z-10 flex items-center gap-2 text-xs text-[#205234] font-medium">
@@ -754,21 +687,13 @@ export default function App() {
                       </button>
                     )}
                   </div>
-
                 </div>
-
               </div>
             )}
-
           </div>
-
         </div>
 
-        {/* =========================================================================
-            3. جدار الرسائل المختومة للأبطال (GALLERY - يبدأ فارغاً تماماً)
-            ========================================================================= */}
         <section id="gallery-section" className="pt-8 border-t border-[#c5a059]/25 space-y-6">
-          
           <div className="flex items-center justify-between pb-2">
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-[#f5e6be] font-amiri flex items-center gap-2">
@@ -786,7 +711,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Clean Slate: يبدأ فارغاً تماماً */}
           {savedEnvelopes.length === 0 ? (
             <div className="text-center py-16 px-4 rounded-3xl border border-dashed border-emerald-800/40 bg-[#041a10]/75 text-emerald-300/80 space-y-3">
               <div className="w-14 h-14 mx-auto rounded-full bg-[#072819] border border-[#c5a059]/40 flex items-center justify-center">
@@ -800,7 +724,6 @@ export default function App() {
               </p>
             </div>
           ) : (
-            /* شبكة الأظرف المختومة المنشورة بتأثير حركي انسيابي (Float Animation) */
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {savedEnvelopes.map((item, index) => (
                 <div
@@ -816,8 +739,6 @@ export default function App() {
                   }}
                 >
                   <div className="relative royal-envelope-paper rounded-2xl p-5 border border-[#c5a059]/70 shadow-xl flex flex-col justify-between min-h-[185px] overflow-hidden">
-                    
-                    {/* ثنية لسان الظرف */}
                     <div
                       className="absolute top-0 left-0 right-0 h-16 pointer-events-none border-b border-[#b38f46]"
                       style={{
@@ -826,7 +747,6 @@ export default function App() {
                       }}
                     />
 
-                    {/* اسم الطالبة ورقم الظرف */}
                     <div className="relative z-10 flex items-center justify-between border-b border-[#295c3e]/20 pb-1.5 gap-2">
                       <div className="flex items-center gap-1.5 truncate">
                         <span className="text-[10px] text-[#0a2918] bg-[#dfd0b5] font-mono px-1.5 py-0.5 rounded border border-[#b38f46] font-bold shrink-0">
@@ -841,14 +761,12 @@ export default function App() {
                       </span>
                     </div>
 
-                    {/* الختم الشمعي الحقيقي في المنتصف */}
                     <div className="relative z-10 my-auto py-2 flex items-center justify-center">
                       <div className="wax-seal-3d group-hover:scale-110 transition-transform">
                         <RealisticWaxSeal sealId={item.sealId} size={58} />
                       </div>
                     </div>
 
-                    {/* زر فض الختم وقراءة الرسالة + الإعجاب */}
                     <div className="relative z-10 flex items-center justify-between pt-2 border-t border-[#295c3e]/20 text-xs">
                       <span className="text-[11px] text-[#18462b] group-hover:text-[#0b6335] group-hover:underline font-semibold">
                         انقري لفتح وقراءة الرسالة ←
@@ -866,25 +784,18 @@ export default function App() {
                         <span>{item.likes}</span>
                       </button>
                     </div>
-
                   </div>
                 </div>
               ))}
             </div>
           )}
-
         </section>
 
       </main>
 
-      {/* =========================================================================
-          4. نافذة اختيار الختم الشمعي المنبثقة (Popup Modal)
-          ========================================================================= */}
       {isSealModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
           <div className="relative w-full max-w-xl bg-[#041910] border-2 border-[#c5a059]/50 rounded-3xl p-6 sm:p-8 text-center shadow-[0_0_60px_rgba(0,0,0,0.95)] space-y-6">
-            
-            {/* زر إغلاق النافذة */}
             <button
               onClick={() => {
                 playTactileAudio('box_open');
@@ -895,7 +806,6 @@ export default function App() {
               <X className="w-5 h-5" />
             </button>
 
-            {/* ترويسة نافذة اختيار الختم */}
             <div className="space-y-1.5 pt-2">
               <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#072819] border border-[#c5a059]/40 text-[#dfc484] text-xs font-bold">
                 <Shield className="w-3.5 h-3.5 text-[#e5c97d]" />
@@ -909,7 +819,6 @@ export default function App() {
               </p>
             </div>
 
-            {/* قائمة خيارات الأختام الشمعية الواقعية */}
             <div className="space-y-3 max-h-[50vh] overflow-y-auto px-1">
               {WAX_SEALS_CONFIG.map(seal => {
                 const isSelected = selectedSeal === seal.id;
@@ -947,7 +856,6 @@ export default function App() {
               })}
             </div>
 
-            {/* زر تأكيد الاختيار وإغلاق النافذة */}
             <div className="pt-2">
               <button
                 onClick={() => {
@@ -960,18 +868,13 @@ export default function App() {
                 <Check className="w-4 h-4 text-[#072013]" />
               </button>
             </div>
-
           </div>
         </div>
       )}
 
-      {/* =========================================================================
-          5. نافذة قراءة الرسالة عند النقر عليها في الجدار
-          ========================================================================= */}
       {inspectingLetter && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-300">
           <div className="relative w-full max-w-xl official-letter-paper rounded-3xl p-6 sm:p-8 border-2 border-[#c5a059] shadow-2xl text-[#11311f] space-y-6">
-            
             <button
               onClick={() => {
                 playTactileAudio('open_envelope');
@@ -1032,14 +935,10 @@ export default function App() {
                 إعادة إغلاق الرسالة
               </button>
             </div>
-
           </div>
         </div>
       )}
 
-      {/* =========================================================================
-          6. التوثيق المدرسي في التذييل (Footer)
-          ========================================================================= */}
       <footer className="mt-16 bg-[#020b06] border-t border-[#c5a059]/25 py-8 text-center text-xs sm:text-sm text-emerald-300/80 backdrop-blur-md">
         <div className="max-w-4xl mx-auto px-4 space-y-2">
           <p className="font-bold text-[#f5e6be] text-base font-amiri">
@@ -1058,13 +957,4 @@ export default function App() {
 
     </div>
   );
-}
-// كود الحفظ التلقائي في المتصفح
-if (typeof window !== 'undefined') {
-  window.addEventListener('load', () => {
-    const saved = localStorage.getItem('saved_letters');
-    if (saved && !sessionStorage.getItem('restored')) {
-      sessionStorage.setItem('restored', 'true');
-    }
-  });
 }
