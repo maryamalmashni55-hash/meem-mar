@@ -333,7 +333,52 @@ export default function App() {
       })));
     };
     void loadMessages();
-    return () => { active = false; };
+
+    const channel = supabase
+      .channel('messages-wall')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'messages' },
+        (payload) => {
+          const row = (payload.new || payload.old) as {
+            id?: string;
+            student_name?: string;
+            message_en?: string;
+            seal_id?: string;
+            likes?: number;
+            created_at?: string;
+          };
+
+          setSavedEnvelopes((current) => {
+            if (payload.eventType === 'DELETE') {
+              return current.filter((item) => item.id !== row.id);
+            }
+
+            if (!row.id || !row.student_name || !row.message_en) return current;
+            const incoming: SavedEnvelope = {
+              id: row.id,
+              studentName: row.student_name,
+              messageEn: row.message_en,
+              sealId: (row.seal_id as SealId) || 'emblem',
+              likes: row.likes ?? 0,
+              isLiked: current.find((item) => item.id === row.id)?.isLiked ?? false,
+              timestamp: row.created_at ? new Date(row.created_at).toLocaleString('ar-SA') : 'الآن',
+            };
+            return [incoming, ...current.filter((item) => item.id !== incoming.id)]
+              .sort((a, b) => b.id.localeCompare(a.id));
+          });
+        },
+      )
+      .subscribe((status) => {
+        if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+          setSubmitError('تعذر تشغيل التحديث اللحظي، لكن الحفظ السحابي ما زال مفعلاً.');
+        }
+      });
+
+    return () => {
+      active = false;
+      void supabase.removeChannel(channel);
+    };
   }, []);
 
   // Modal for reading any student envelope from gallery
